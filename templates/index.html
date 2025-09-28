@@ -1,0 +1,154 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Heart Failure DEATH_EVENT Prediction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title mb-3">Heart Failure — Predict DEATH_EVENT</h3>
+            <p class="text-muted">Fill patient details and click <strong>Predict</strong>.</p>
+            <form action="/predict" method="post" novalidate>
+              <div class="row g-3">
+
+                <!-- Left column (numeric) -->
+                <div class="col-md-6">
+                  <!-- Age -->
+                  <div class="mb-2">
+                    <label class="form-label">Age</label>
+                    <input name="age" type="number" required
+                      min="{{ constraints.age.min }}" max="{{ constraints.age.max }}" step="{{ constraints.age.step }}"
+                      class="form-control" placeholder="e.g., 60">
+                  </div>
+
+                  <!-- Creatinine phosphokinase -->
+                  <div class="mb-2">
+                    <label class="form-label">Creatinine Phosphokinase (CPK)</label>
+                    <input name="creatinine_phosphokinase" type="number" required
+                      min="{{ constraints.creatinine_phosphokinase.min }}" max="{{ constraints.creatinine_phosphokinase.max }}"
+                      step="{{ constraints.creatinine_phosphokinase.step }}" class="form-control" placeholder="e.g., 582">
+                  </div>
+
+                  <!-- Ejection fraction -->
+                  <div class="mb-2">
+                    <label class="form-label">Ejection Fraction (%)</label>
+                    <input name="ejection_fraction" type="number" required
+                      min="{{ constraints.ejection_fraction.min }}" max="{{ constraints.ejection_fraction.max }}" step="{{ constraints.ejection_fraction.step }}"
+                      class="form-control" placeholder="e.g., 20">
+                  </div>
+
+                  <!-- Platelets -->
+                  <div class="mb-2">
+                    <label class="form-label">Platelets</label>
+                    <input name="platelets" type="number" required
+                      min="{{ constraints.platelets.min }}" max="{{ constraints.platelets.max }}" step="{{ constraints.platelets.step }}"
+                      class="form-control" placeholder="e.g., 263358.03">
+                  </div>
+
+                  <!-- Serum creatinine -->
+                  <div class="mb-2">
+                    <label class="form-label">Serum Creatinine</label>
+                    <input name="serum_creatinine" type="number" required
+                      min="{{ constraints.serum_creatinine.min }}" max="{{ constraints.serum_creatinine.max }}" step="{{ constraints.serum_creatinine.step }}"
+                      class="form-control" placeholder="e.g., 1.9">
+                  </div>
+
+                </div>
+
+                <!-- Right column (other numeric + dropdowns) -->
+                <div class="col-md-6">
+                  <!-- Serum sodium -->
+                  <div class="mb-2">
+                    <label class="form-label">Serum Sodium</label>
+                    <input name="serum_sodium" type="number" required
+                      min="{{ constraints.serum_sodium.min }}" max="{{ constraints.serum_sodium.max }}" step="{{ constraints.serum_sodium.step }}"
+                      class="form-control" placeholder="e.g., 137">
+                  </div>
+
+                  <!-- Time -->
+                  <div class="mb-2">
+                    <label class="form-label">Time (follow-up days)</label>
+                    <input name="time" type="number" required
+                      min="{{ constraints.time.min }}" max="{{ constraints.time.max }}" step="{{ constraints.time.step }}"
+                      class="form-control" placeholder="e.g., 4">
+                  </div>
+
+                  <!-- Sex -->
+                  <div class="mb-2">
+                    <label class="form-label">Sex</label>
+                    <select name="sex" class="form-select" required>
+                      {% for s in sex_options %}
+                      <option value="{{ s }}">{{ s }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Anaemia -->
+                  <div class="mb-2">
+                    <label class="form-label">Anaemia</label>
+                    <select name="anaemia" class="form-select" required>
+                      {% for b in binary_options %}
+                      <option value="{{ b }}">{{ b }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Diabetes -->
+                  <div class="mb-2">
+                    <label class="form-label">Diabetes</label>
+                    <select name="diabetes" class="form-select" required>
+                      {% for b in binary_options %}
+                      <option value="{{ b }}">{{ b }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- High blood pressure -->
+                  <div class="mb-2">
+                    <label class="form-label">High Blood Pressure</label>
+                    <select name="high_blood_pressure" class="form-select" required>
+                      {% for b in binary_options %}
+                      <option value="{{ b }}">{{ b }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <!-- Smoking -->
+                  <div class="mb-2">
+                    <label class="form-label">Smoking</label>
+                    <select name="smoking" class="form-select" required>
+                      {% for b in binary_options %}
+                      <option value="{{ b }}">{{ b }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="mt-4 d-flex justify-content-between">
+                <button class="btn btn-primary" type="submit">Predict</button>
+                <a class="btn btn-outline-secondary" href="/api/predict" onclick="alert('Use POST with JSON to /api/predict')">API info</a>
+              </div>
+            </form>
+            <hr>
+            <p class="text-muted small">Fields marked required must be provided. Binary fields use Yes/No. Sex uses Male/Female.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
